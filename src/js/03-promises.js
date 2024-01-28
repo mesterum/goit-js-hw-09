@@ -17,7 +17,7 @@ Notify.init({ useIcon: false });
 const form = document.forms[0];
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  formElements = form.elements
+  const formElements = form.elements
   for (let position = 1, delay = +formElements.delay.value; position <= +formElements.amount.value;
     position++, delay += +formElements.step.value)
     createPromise(position, delay)
