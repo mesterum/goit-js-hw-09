@@ -70,6 +70,7 @@ function animationInterval(endTime, callback, { ms = 1000, signal, lastCB = (abo
   lastTick = nextTick + 1
 
   function frame(time) {
+    nextTick = Math.round((end - time) / ms)
     if (nextTick < 0 && lastTick > 0) nextTick = 0;
     if (signal?.aborted || nextTick < 0) {
       lastCB(nextTick >= 0); return;
@@ -82,10 +83,7 @@ function animationInterval(endTime, callback, { ms = 1000, signal, lastCB = (abo
   }
 
   function scheduleFrame(time) {
-    const remaining = end - time;
-    nextTick = Math.round(remaining / ms) - 1;
-    const targetNext = end - nextTick * ms;
-    const delay = targetNext - performance.now();
+    const delay = end - --nextTick * ms - performance.now();
     setTimeout(requestAnimationFrame, delay, frame);
   }
 
